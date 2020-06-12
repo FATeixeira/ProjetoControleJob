@@ -1,25 +1,25 @@
-			function InterfaceCarregaDados(){
+		function InterfaceCarregaDados(){
 				 /* - InterfaceGetData - 
 				     
 				     Regra Funcional...: Realiza validacoes dos dados inputados na tela, formata e retorna data inicio
 				                         e fim da Janela e a lista de jobs informados pelo usuario.
                             
-             Parametros Entrada: N/a
+                    Parametros Entrada: N/a
                             
-             Parametros Saida..: - data inicio e fim informada na tela
+                    Parametros Saida..: - data inicio e fim informada na tela
                                  - lista de jobs informada na tela
                                  - flag indicado se ha erros na tela
                             
-             Autor.............: Flavio Teixeira
-             Data..............: 10/06/2020   
+                    Autor.............: Flavio Teixeira
+                    Data..............: 10/06/2020   
                             
-             - Log alterações -          
-          */
-         var flagErro     = 'N';
-         var dataInicio   = document.getElementById("itDataInicio").value;
-			   var horaInicio   = document.getElementById("itHoraInicio").value;
-			   var dataFim      = document.getElementById("itDataFim").value;
-			   var horaFim      = document.getElementById("itHoraFim").value;
+                    - Log alterações -          
+                */
+                var flagErro     = 'N';
+                var dataInicio   = document.getElementById("itDataInicio").value;
+			    var horaInicio   = document.getElementById("itHoraInicio").value;
+			    var dataFim      = document.getElementById("itDataFim").value;
+			    var horaFim      = document.getElementById("itHoraFim").value;
 			   
 			   document.getElementById("msgDataInicio").style.visibility = "hidden";
 			   document.getElementById("msgDataFim").style.visibility = "hidden";			   	         
@@ -72,9 +72,9 @@
           */
          var flagErro     = 'N';
          var idJob        = document.getElementById("itIdJob").value;
-			   var descricao    = document.getElementById("itDescricao").value;
+		 var descricao    = document.getElementById("itDescricao").value;
          var dataMaxima   = document.getElementById("itDataMaxima").value;
-			   var horaMaxima   = document.getElementById("itHoraMaxima").value;
+		 var horaMaxima   = document.getElementById("itHoraMaxima").value;
          var tempoEstimado= document.getElementById("itTempoEstimado").value;
 
          job = {id:''
@@ -83,18 +83,163 @@
 			   	         ,tempoEstimado:0
 			   	         };
 			   
-			   document.getElementById("msgCadJob").style.visibility = "hidden";
+		document.getElementById("msgCadJob").style.visibility = "hidden";
          
          if  (idJob === '' || descricao === '' || horaMaxima === '' || horaMaxima === '' || tempoEstimado === '') {
          	   flagErro = 'S';
          	   document.getElementById("msgCadJob").style.visibility = "visible";
          	   document.getElementById("msgCadJob").innerHTML = "Todos os campos são obrigatórios";
          } else {
-             job.idJob               = idJob;
+             job.id                  = idJob;
              job.descricao           = descricao;
-             job.dataMaximaConclusao = Date(dataMaxima + ' ' + horaMaxima + ':00');
-             job.tempoEstimado       = tempoEstimado;             
+             job.dataMaximaConclusao = new Date(dataMaxima + ' ' + horaMaxima + ':00');
+             job.tempoEstimado       = parseInt(tempoEstimado);  
          }       
          
          return {job, flagErro};
     }
+    
+    function funcIncluirJob(){
+		 /* - funcIncluirJob - 
+				     
+			 Regra Funcional...: Inclui Job inputado pelo usuário na tabela de Jobs.
+             
+             Parametros Entrada: N/A
+             
+             Parametros Saida..: N/A
+             
+             Autor.............: Flavio Teixeira
+             Data..............: 10/06/2020
+             
+             - Log alterações -
+        */
+    	   const interface  = InterfaceCarregaDadosJob();
+    	   
+    	   if  (interface.flagErro === 'N') {
+    	   	  var job   = {};
+    	   	  job       = interface.job;
+             var table = document.getElementById("tblJobs");
+             var row   = table.insertRow(1);
+             
+             var cell1 = row.insertCell(0);
+             var cell2 = row.insertCell(1);
+             var cell3 = row.insertCell(2);
+             var cell4 = row.insertCell(3);
+             
+             cell1.innerHTML = job.id;
+             cell2.innerHTML = job.descricao;
+             cell3.innerHTML = job.dataMaximaConclusao.toLocaleDateString() 
+                       + ' ' + job.dataMaximaConclusao.toLocaleTimeString();
+             cell4.innerHTML = job.tempoEstimado + " horas";
+             
+             window.globalListaJobs.push(job);
+             
+             document.getElementById("itIdJob").value        = '';
+			 document.getElementById("itDescricao").value    = '';
+             document.getElementById("itDataMaxima").value   = '';
+			 document.getElementById("itHoraMaxima").value   = '';
+             document.getElementById("itTempoEstimado").value= '';
+			   }
+		}
+		
+		function funcExibirConjunto(conjuntosExecucao, conjuntoInconsistente){
+					/* - funcIncluirJob - 
+				     
+				     Regra Funcional...: Inclui conjunto retornado pelo controle de Jobs. 
+				                         Caso haja inconsistências, carrega a tabela de Inconsistentes.
+             
+                    Parametros Entrada: Conjunto Jobs, Jobs Inconsistentes
+             
+                    Parametros Saida..: N/A
+             
+                    Autor.............: Flavio Teixeira
+                    Data..............: 10/06/2020
+             
+                     - Log alterações -
+                */
+    	   
+    	        funcLimparTabela("tblConjuntos");
+    	   
+    	        var table      = document.getElementById("tblConjuntos");
+                var ixConjunto = 0;
+				 
+				 if  (conjuntosExecucao.length > 0) {
+				      document.getElementById("divConjuntos").style.visibility = "visible";
+				 }
+				 
+    	        for  (conjunto of conjuntosExecucao) {     	
+                    ixConjunto      = ixConjunto + 1;
+                    row                 = table.insertRow(ixConjunto);
+                    cell1                = row.insertCell(0);
+                    cell2                = row.insertCell(1);
+              
+                    cell1.innerHTML = ixConjunto.toString().padStart(4, '0');
+                    cell2.innerHTML = conjunto;
+                 }          
+         
+    	         funcLimparTabela("tblConjuntosInconsistentes");
+
+				 if  (conjuntoInconsistente.length > 0) {
+				      document.getElementById("divConjuntosInconsistentes").style.visibility = "visible";
+				 }
+
+                var table = document.getElementById("tblConjuntosInconsistentes");
+                var ix    = 0;
+         
+                for (job of conjuntoInconsistente) { 
+         	            ix        = ix + 1;
+                        row       = table.insertRow(ix);
+                        cell1     = row.insertCell(0);
+                        cell2     = row.insertCell(1);
+              
+                        cell1.innerHTML = job.idJob;
+                        cell2.innerHTML = job.msgMotivo;    	
+                }         
+              
+		}
+		
+	  function funcLimparResultado(){
+		    /* - funcIncluirJob - 
+				     
+			 Regra Funcional...: Limpa e oculta as tabelas de resultado
+             
+             Parametros Entrada: N/A
+             
+             Parametros Saida..: N/A
+             
+             Autor.............: Flavio Teixeira
+             Data..............: 10/06/2020
+             
+             - Log alterações -
+        */
+    	   
+    	   funcLimparTabela("tblConjuntos");
+    	   funcLimparTabela("tblConjuntosInconsistentes"); 
+           document.getElementById("divConjuntos").style.visibility = "hidden";
+           document.getElementById("divConjuntosInconsistentes").style.visibility = "hidden";
+	}
+		
+	function funcLimparTabela(idTabela){
+			/* - funcIncluirJob - 
+				     
+			 Regra Funcional...: Exclui todos os registros de uma tabela, exceto o cabecalho
+             
+             Parametros Entrada: id da tabela
+             
+             Parametros Saida..: N/A
+             
+             Autor.............: Flavio Teixeira
+             Data..............: 10/06/2020
+             
+             - Log alterações -
+        */
+    	  var objTabela   = document.getElementById(idTabela);
+    	  var tamanho    = objTabela.rows.length;
+    	  var ix                = 1;
+    	  
+    	  while (ix < tamanho) {
+		          objTabela.deleteRow(1);
+		          ix = ix + 1
+		    }      
+		
+	}
