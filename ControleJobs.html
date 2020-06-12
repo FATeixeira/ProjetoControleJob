@@ -1,202 +1,202 @@
 <!DOCTYPE html>
 <html>
-	
-	<head>
-		<title>Controle de Jobs</title>
-	</head>
-	
-	<body>
-		<style>
-				table, th, td {
-				  border: 0px solid black;
-				}
-								
-				th, td {
-				  padding: 7px;
-				}
-				
-				.separador {
-				  border: 1px solid grey !important;
-				  border-radius: 20px !important;
-				}
-				.titulo {
-				  font-size: 16pt;
-				  color: grey;
-				}
-		</style>
-		
-		<script src="controleJob.js"></script>
-		<script src="interface.js"></script>
 
-		<form name = "ControleJobs">
-					<table>
-						<tr >
-							<td class="separador">
-				  				<div>
-  			  					<p class="titulo">Jobs:</p>
-				  				</div> 
-          				
-          				<table>
-			    							<tr>
-			    									<td>
-		      										<label for="itIdJob">Id Job </label>
-		      									</td>	
-          							  	
-		      									<td>
-		      									  <label for="itDescricao">Descrição</label>
-			    									</td>
-			    									
-			    									<td>
-		      										<label for="itDataMaxima">Data Máxima Conclusão</label>
-		      									</td>	
-          							  	
-		      									<td>
-		      									  <label for="itHoraMaxima">Hora Máxima Conclusão</label>
-			    									</td>
-			    									
-			    									<td>
-		      									  <label for="itTempoEstimado">Tempo Estimado</label>
-			    									</td>
- 			  								</tr>
- 			  								
- 			  								<tr>
- 			  								  	<td>
-  														<input type="number" id="itIdJob" value="">
-			    									</td>
-          							  	
- 			  								  	<td>
-  														<input  id="itDescricao" value="">
-			    									</td>
-          							  	
- 			  								  	<td>
-  														<input type="date" id="itDataMaxima" value="">
-			    									</td>
-          							  	
- 			  								  	<td>
-  														<input type="time" id="itHoraMaxima" value="">
-			    									</td>
-          							  	
- 			  								  	<td>
-  														<input type="number" id="itTempoEstimado" value="">
-			    									</td>
- 			  								  	<td>
-  														<label id="msgCadJob" style="visibility:hidden" />
-			    									</td>
-			  			  				<tr>
-									</table> 
-									
-			    				<button type="button" onclick="funcIncluirJob()">Adicionar Job</button>
-			    	
-				  				<table id="tblJobs">
-			    				  <tr>
-  			  					  <th>Id Job</th>
-    		  						<th>Descrição</th>
-  			  					  <th>Data Máxima Conclusão</th>
-  			  					  <th>Tempo Estimado</th>
-  			  					</tr>
-			    				</table>
-			    
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="separador">
+  <head>
+    <title>Controle de Jobs</title>
+  </head>
 
-				  				<div>
-  			  					<p class="titulo">Janela:</p>
-				  				</div> 
-          				
-									<table>
-			    						 <tr>
-			    						 			<td>
-		      						 				<label for="lbDataInicio">Data Início</label>
-		      						 			</td>	
-          						  		
-		      						 			<td>
-		      						 			  <label for="lbHoraInicio">Hora Início</label>
-			    						 			</td>
- 			  							 </tr>
- 			  							 
-          						 <tr>
- 			  							  		 <td>
-  										 				<input type="date" id="itDataInicio" value="">
-			    						 			</td>
-          						  		
- 			  							  		 <td>
-  										 				<input type="time" id="itHoraInicio" value="">
-			    						 			</td>
-          						  		
- 			  							  		 <td>
-  										 				<label id="msgDataInicio" style="visibility:hidden" />
-			    						 			</td>
-			    						 <tr>
-			    						 
-			    						 <tr>
-			    						 			<td>
-		      						 				<label for="lbDataFim">Data Fim</label>
-		      						 			</td>	
-          						  		
-		      						 			<td>
-		      						 			  <label for="lbHoraFim">Hora Fim</label>
-			    						 			</td>
- 			  							 </tr>
- 			  							 
-          						 <tr>
- 			  							   		<td>
-  										 				<input type="date" id="itDataFim" value="">
-			    						 	 		</td>
-          						   		
- 			  							   		<td>
-  										 				<input type="time" id="itHoraFim" value="">
-			    						 	 		</td>
-			    						 	 		
- 			  							   		<td>
-  										 				<label id="msgDataFim" style="visibility:hidden" />
-			    						 	 		</td>
-			    						 <tr>
-			    						 	
-			    						 <tr>	
-			    						 			<td>
-    									 				<button type="button" onclick="funcGeraControleJobs()">Gerar Conjuntos</button>
-    									 			</td>
-			    						 			<td>
-    									 				<button type="button" onclick="funcLimparResultado()">Limpar</button>
-    									 			</td>
-											 </tr>    
-											 
-									</table>
+  <body>
+    <style>
+        table, th, td {
+          border: 0px solid black;
+        }
 
-							</td>
-						</tr>
-						
-						<tr>
-							<td class="separador">
-								  <div>
-  			  					<p class="titulo">Resultado:</p>
-				  				</div> 
+        th, td {
+          padding: 7px;
+        }
 
-			  					<div id="divConjuntos" style="visibility:hidden">
-									  	<p>Conjuntos:</p>
-									  	<table id="tblConjuntos">
-			  					    <tr>
-  								  	  <th>Id Conjunto</th>
-    							  		<th>Jobs</th>
-  								  	</tr>
-			  					  </table>
-			  					</div> 
-	      					
-			  					<div id="divConjuntosInconsistentes" style="visibility:hidden">
-									  	<p>Inconsistentes:</p>
-									  	<table id="tblConjuntosInconsistentes">
-			  					    <tr>
-  								  	  <th>Id Job Inconsistente</th>
-    							  		<th>Motivo</th>
-  								  	</tr>
-			  					  </table>
-			  					</div> 
-									</td>
-						</tr>
-				</table>
-		</form>
-	</body>
+        .separador {
+          border: 1px solid grey !important;
+          border-radius: 20px !important;
+        }
+        .titulo {
+          font-size: 16pt;
+          color: grey;
+        }
+    </style>
+
+    <script src="controleJob.js"></script>
+    <script src="interface.js"></script>
+
+    <form name = "ControleJobs">
+          <table>
+            <tr >
+              <td class="separador">
+                  <div>
+                    <p class="titulo">Jobs:</p>
+                  </div>
+
+                  <table>
+                        <tr>
+                            <td>
+                              <label for="itIdJob">Id Job </label>
+                            </td>
+
+                            <td>
+                              <label for="itDescricao">Descrição</label>
+                            </td>
+
+                            <td>
+                              <label for="itDataMaxima">Data Máxima Conclusão</label>
+                            </td>
+
+                            <td>
+                              <label for="itHoraMaxima">Hora Máxima Conclusão</label>
+                            </td>
+
+                            <td>
+                              <label for="itTempoEstimado">Tempo Estimado</label>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                              <input type="number" id="itIdJob" value="">
+                            </td>
+
+                            <td>
+                              <input  id="itDescricao" value="">
+                            </td>
+
+                            <td>
+                              <input type="date" id="itDataMaxima" value="">
+                            </td>
+
+                            <td>
+                              <input type="time" id="itHoraMaxima" value="">
+                            </td>
+
+                            <td>
+                              <input type="number" id="itTempoEstimado" value="">
+                            </td>
+                            <td>
+                              <label id="msgCadJob" style="visibility:hidden" />
+                            </td>
+                        <tr>
+                  </table>
+
+                  <button type="button" onclick="funcIncluirJob()">Adicionar Job</button>
+
+                  <table id="tblJobs">
+                    <tr>
+                      <th>Id Job</th>
+                      <th>Descrição</th>
+                      <th>Data Máxima Conclusão</th>
+                      <th>Tempo Estimado</th>
+                    </tr>
+                  </table>
+
+              </td>
+            </tr>
+
+            <tr>
+              <td class="separador">
+
+                  <div>
+                    <p class="titulo">Janela:</p>
+                  </div>
+
+                  <table>
+                       <tr>
+                            <td>
+                              <label for="lbDataInicio">Data Início</label>
+                            </td>
+
+                            <td>
+                              <label for="lbHoraInicio">Hora Início</label>
+                            </td>
+                       </tr>
+
+                       <tr>
+                             <td>
+                              <input type="date" id="itDataInicio" value="">
+                            </td>
+
+                             <td>
+                              <input type="time" id="itHoraInicio" value="">
+                            </td>
+
+                             <td>
+                              <label id="msgDataInicio" style="visibility:hidden" />
+                            </td>
+                       <tr>
+
+                       <tr>
+                            <td>
+                              <label for="lbDataFim">Data Fim</label>
+                            </td>
+
+                            <td>
+                              <label for="lbHoraFim">Hora Fim</label>
+                            </td>
+                       </tr>
+
+                       <tr>
+                            <td>
+                              <input type="date" id="itDataFim" value="">
+                            </td>
+
+                            <td>
+                              <input type="time" id="itHoraFim" value="">
+                            </td>
+
+                            <td>
+                              <label id="msgDataFim" style="visibility:hidden" />
+                            </td>
+                       <tr>
+
+                       <tr>
+                            <td>
+                              <button type="button" onclick="funcGeraControleJobs()">Gerar Conjuntos</button>
+                            </td>
+                            <td>
+                              <button type="button" onclick="funcLimparResultado()">Limpar</button>
+                            </td>
+                       </tr>
+
+                  </table>
+
+              </td>
+            </tr>
+
+            <tr>
+              <td class="separador">
+                  <div>
+                    <p class="titulo">Resultado:</p>
+                  </div>
+
+                  <div id="divConjuntos" style="visibility:hidden">
+                      <p>Conjuntos:</p>
+                      <table id="tblConjuntos">
+                      <tr>
+                        <th>Id Conjunto</th>
+                        <th>Jobs</th>
+                      </tr>
+                    </table>
+                  </div>
+
+                  <div id="divConjuntosInconsistentes" style="visibility:hidden">
+                      <p>Inconsistentes:</p>
+                      <table id="tblConjuntosInconsistentes">
+                      <tr>
+                        <th>Id Job Inconsistente</th>
+                        <th>Motivo</th>
+                      </tr>
+                    </table>
+                  </div>
+                  </td>
+            </tr>
+        </table>
+    </form>
+  </body>
 </html>
