@@ -13,29 +13,29 @@
              Data..............: 10/06/2020   
                             
              - Log alterações -               
-      	  */
+        */
 			   const interface  = InterfaceCarregaDados();
 			   
 			   if  (interface.flagErro === 'N') { 	         
-              		var inicioJanela = interface.tsDataInicio;
-             		 var fimJanela    = interface.tsDataFim;
+              var inicioJanela = interface.tsDataInicio;
+              var fimJanela    = interface.tsDataFim;
 			        var listaJobs    = [];
 			        listaJobs        = window.globalListaJobs;
 			        
 			        //Ordenacao ascendente por data Maxima de Conclusao
-          		    listaJobs = listaJobs.sort((a, b) => a.dataMaximaConclusao - b.dataMaximaConclusao);
+              listaJobs = listaJobs.sort((a, b) => a.dataMaximaConclusao - b.dataMaximaConclusao);
 
-           		   var conjuntosExecucao = [];
-            	   var conjuntoInconsistente = [];
-           		   var ixConjunto = 0; 
+              var conjuntosExecucao = [];
+              var conjuntoInconsistente = [];
+              var ixConjunto = 0; 
               
-             		 const controle = funcControleJobs(listaJobs, inicioJanela, fimJanela);
+              const controle = funcControleJobs(listaJobs, inicioJanela, fimJanela);
               
-              		funcExibirConjunto(controle.controleExecucao, controle.controleInconsistente);
-        	  }
+              funcExibirConjunto(controle.controleExecucao, controle.controleInconsistente);
+          }
       }
      
-		function funcControleJobs(listaJobs, inicioJanela, fimJanela){
+			function funcControleJobs(listaJobs, inicioJanela, fimJanela){
 				 /* - funcControleJobs - 
 				     
 				     Regra Funcional...: A partir de lista de jobs e periodo de janela, gera conjuntos de jobs a serem processados
@@ -57,8 +57,8 @@
 				var controleExecucao      = [];
 				var controleInconsistente = [];
 				var inconsistente         = {idJob:0, msgMotivo:''};
-			    var tempoConjunto         = 0;
-			    var ixConjunto            = 0;
+			  var tempoConjunto         = 0;
+			  var ixConjunto            = 0;
               
 				for (job of listaJobs) {
 					  const resultCons = funcConsisteJob(job, inicioJanela, fimJanela);
@@ -90,7 +90,7 @@
 			  return {controleExecucao, controleInconsistente};
 			}
 			
-		function funcConsisteJob(job, inicioJanela, fimJanela){
+			function funcConsisteJob(job, inicioJanela, fimJanela){
 				 /* - funcConsisteJob - 
 				     
 				     Regra Funcional...: Valida se o job enviado é possivel de ser processado 
@@ -109,10 +109,10 @@
              - Log alterações -
         */
         
-		var flagValido            = 'S';
-		var motivo                 = '';
-        var prevFimJob         = new Date(inicioJanela);
-        var tsFimJanela         = new Date(fimJanela);
+				var flagValido            = 'S';
+				var motivo                = '';
+        var prevFimJob            = new Date(inicioJanela);
+        var tsFimJanela           = new Date(fimJanela);
         var tsdataMaximaConclusao = new Date(job.dataMaximaConclusao);
 
         prevFimJob.setHours(prevFimJob.getHours() + job.tempoEstimado);				
