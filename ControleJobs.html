@@ -2,72 +2,229 @@
 <html>
 	
 	<head>
-		<meta charset="UTF-8">
 		<title>Controle de Jobs</title>
 	</head>
 	
 	<body>
+		<style>
+				table, th, td {
+				  border: 0px solid black;
+				}
+				
+				th, td {
+				  padding: 7px;
+				}
+		</style>
+		
 		<script>
 			
-			var job1 = {id:'01'
-				         ,descricao:'Importação de arquivos de fundos'
-				         ,dataMaximaConclusao:'2019-11-10 12:00:00'
-				         ,tempoEstimado:2
-				         };
-
-			var job2 = {id:'02'
-				         ,descricao:'Job 2'
-				         ,dataMaximaConclusao:'2019-11-11 12:00:00'
-				         ,tempoEstimado:6
-				         };
-
-
-			var job3 = {id:'03'
-				         ,descricao:'Importação de arquivos de fundos'
-				         ,dataMaximaConclusao:'2019-11-11 8:00:00'
-				         ,tempoEstimado:8
-				         };
-
-      var inicioJanela = '2019-11-10 09:00:00';
-      var fimJanela    = '2019-11-11 12:00:00';
-			var schedule     = [job1, job2, job3];
+		  function teste(){
+			   var job1 = {id:'01'
+			   	         ,descricao:'Importação de arquivos de fundos'
+			   	         ,dataMaximaConclusao:'2019-11-11 12:00:00'
+			   	         ,tempoEstimado:4
+			   	         };
+         
+			   var job2 = {id:'02'
+			   	         ,descricao:'Job 2'
+			   	         ,dataMaximaConclusao:'2019-11-11 12:00:00'
+			   	         ,tempoEstimado:3
+			   	         };
+         
+         
+			   var job3 = {id:'03'
+			   	         ,descricao:'Importação de arquivos de fundos'
+			   	         ,dataMaximaConclusao:'2019-11-11 08:00:00'
+			   	         ,tempoEstimado:8
+			   	         };
+         
+			   var job4 = {id:'04'
+			   	         ,descricao:'Importação de arquivos de fundos'
+			   	         ,dataMaximaConclusao:'2019-11-11 08:00:00'
+			   	         ,tempoEstimado:9
+			   	         };
+         
+			   var job5 = {id:'05'
+			   	         ,descricao:'Importação de arquivos de fundos'
+			   	         ,dataMaximaConclusao:'2019-11-11 08:00:00'
+			   	         ,tempoEstimado:9
+			   	         };
+			   	         
+         var inicioJanela = '2019-11-09 09:00:00';
+         var fimJanela    = '2019-11-09 12:00:00';
+			   var listaJobs    = [job1, job2, job3, job4, job5];
+         
+         var conjuntosExecucao = [];
+         var conjuntoInconsistente = [];
+         var ixConjunto = 0; 
+         
+         const controle = funcControleJobs(listaJobs, inicioJanela, fimJanela);
+         
+         conjuntosExecucao = controle.controleExecucao;
+         conjuntoInconsistente = controle.controleInconsistente;
+         
+         for (conjunto of conjuntosExecucao) {     	
+             ixConjunto = ixConjunto + 1;
+             alert('ID Jobs conjunto de execucao ' + ixConjunto.toString().padStart(2, '0') + ' = ' + conjunto);
+         }    
+         
+         for (job of conjuntoInconsistente) {     	
+             alert('ID Jobs com Inconsistencias = ' + job.idJob + ' - Motivo = ' + job.msgMotivo);
+         }    
       
-      var conjuntosExecucao = [];
-      var ixConjunto = 0; 
-      
-      conjuntosExecucao = getSchedule(schedule, inicioJanela, fimJanela);
-      
-      for (conjunto of conjuntosExecucao) {     	
-          ixConjunto = ixConjunto + 1;
-          alert('ID Jobs conjunto de execução ' + ixConjunto.toString().padStart(2, '0') + ' = ' + conjunto);
-      }    
-      
-			function getSchedule(schedule, inicioJanela, fimJanela){
-				conjunto = [];
-				retorno = [];
-			  tempoTotal = 0;
-			  ixConjunto = 0;
+      }
+     
+			function funcControleJobs(listaJobs, inicioJanela, fimJanela){
+				 /* - funcControleJobs - 
+				     
+				     Regra Funcional...: A partir de lista de jobs e periodo de janela, gera conjuntos de jobs a serem processados
+				                         agrupado por tempo total de 8 horas.
+                            
+             Parametros Entrada: - array de lista de jobs
+                                 - timestamp de inico de janela
+                                 - timstamp de fim de janela
+                            
+             Parametros Saida..: - array de conjunto de jobs por 8 horas
+                                 - array de jobs inconsistentes
+                            
+             Autor.............: Flavio Teixeira
+             Data..............: 10/06/2020   
+                            
+             - Log alterações -               
+        */
+				var conjunto              = [];
+				var controleExecucao      = [];
+				var controleInconsistente = [];
+				var inconsistente         = {idJob:0, msgMotivo:''};
+			  var tempoConjunto         = 0;
+			  var ixConjunto            = 0;
 				
-				for (job of schedule) {
-   	      	 tempoTotal = tempoTotal + job.tempoEstimado;
-			      
-			      if (tempoTotal > 8) {
-     	          retorno.push(conjunto);
-        				conjunto = [];
-        				
-			      } 			      	
- 	          conjunto.push(job.id);
+				for (job of listaJobs) {
+					  
+					  const resultCons = funcConsisteJob(job, inicioJanela, fimJanela);
+
+					  if (resultCons.flagValido === 'N') {
+	  				  	inconsistente = {};
+					  	  inconsistente.idJob = job.id;
+					  	  inconsistente.msgMotivo = resultCons.motivo;
+
+					  	  controleInconsistente.push(inconsistente);
+					  		}
+					  else {	
+       	      	 tempoConjunto = tempoConjunto + job.tempoEstimado;
+    			      
+    			       if (tempoConjunto > 8) {
+         	          controleExecucao.push(conjunto);
+            				conjunto = [];
+            				
+    			       }
+    	           conjunto.push(job.id);
+    			  }     			      	
 			  }	
-        retorno.push(conjunto);
 			  
-			  return retorno;
+			  if  (conjunto.length > 0)	 {
+			      controleExecucao.push(conjunto);
+				}      
+				
+			  return {controleExecucao, controleInconsistente};
 			}
 			
+			function funcConsisteJob(job, inicioJanela, fimJanela){
+				 /* - funcConsisteJob - 
+				     
+				     Regra Funcional...: Valida se o job enviado é possivel de ser processado 
+				                         na Janela de execução do mesmo.
+             
+             Parametros Entrada: - objeto job
+                                 - timestamp de inico de janela
+                                 - timstamp de fim de janela
+             
+             Parametros Saida..: - indicador de inconsistencia
+                                 - motivo de inconsistencia
+             
+             Autor.............: Flavio Teixeira
+             Data..............: 10/06/2020
+             
+             - Log alterações -
+        */
+				var flagValido            = 'S';
+				var motivo                = '';
+        var prevFimJob            = new Date(inicioJanela);
+        var tsFimJanela           = new Date(fimJanela);
+        var tsdataMaximaConclusao = new Date(job.dataMaximaConclusao);
+
+        prevFimJob.setHours(prevFimJob.getHours() + job.tempoEstimado);				
+        
+				if  (prevFimJob > tsdataMaximaConclusao) {
+					  flagValido = 'N'; 
+					  motivo = 'Inicio da Janela + Tempo de Job é maior que o Prazo Máximo do Job';
+				};
+        
+				if  (prevFimJob > tsFimJanela) {
+					  flagValido = 'N'; 
+					  motivo = 'Inicio da Janela + Tempo de Job é maior que o Fim da Janela';
+				};
+
+				if  (job.tempoEstimado > 8) {
+					  flagValido = 'N'; 
+					  motivo = 'Job possui mais de 8 horas';
+				};
+        
+				return {flagValido, motivo};
+			}
 			
 		</script>
 		
-		<form name = "ConsultaSchedule">
-		
+		<form name = "ControleJobs">
+					<table border="0">
+			    <tr>
+			    	<td>
+		      		<label for="lbDataInicio">Data Início</label>
+		      	</td>	
+
+		      	<td>
+		      	  <label for="lbHoraInicio">Hora Início</label>
+			    	</td>
+ 			  	</tr>
+ 			  	
+          <tr>
+ 			  	  <td>
+  						<input type="date" id="itDataInicio" value="">
+			    	</td>
+
+ 			  	  <td>
+  						<input type="time" id="itHoraInicio" value="">
+			    	</td>
+
+			    <tr>
+			    
+			    <tr>
+			    	<td>
+		      		<label for="lbDataFim">Data Fim</label>
+		      	</td>	
+
+		      	<td>
+		      	  <label for="lbHoraFim">Hora Fim</label>
+			    	</td>
+ 			  	</tr>
+ 			  	
+          <tr>
+ 			  	  <td>
+  						<input type="date" id="itDataFim" value="">
+			    	</td>
+
+ 			  	  <td>
+  						<input type="time" id="itHoraFim" value="">
+			    	</td>
+
+			    <tr>
+			    	
+			    <tr>	
+			    	<td>
+    					<button onclick="teste()">Gerar</button>
+    				</td>
+					</tr>
+				</table>
 		</form>
 	
 	</body>
