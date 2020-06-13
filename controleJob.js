@@ -41,7 +41,7 @@
                  tempoConjunto = tempoConjunto + job.tempoEstimado;
 
                  if (tempoConjunto > 8) {
-                 	  tempoConjunto = 0;
+                 	  tempoConjunto = job.tempoEstimado;
                     controleExecucao.push(conjunto);
                     conjunto = [];
 
