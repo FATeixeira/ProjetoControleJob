@@ -21,10 +21,6 @@
               var fimJanela    = interface.tsDataFim;
               var listaJobs    = [];
               listaJobs        = window.globalListaJobs;
-
-              //Ordenacao ascendente por data Maxima de Conclusao
-              listaJobs = listaJobs.sort((a, b) => a.dataMaximaConclusao - b.dataMaximaConclusao);
-
               var conjuntosExecucao = [];
               var conjuntoInconsistente = [];
               var ixConjunto = 0;

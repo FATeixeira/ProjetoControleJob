@@ -23,6 +23,9 @@
         var tempoConjunto         = 0;
         var ixConjunto            = 0;
 
+        //Ordenacao ascendente por data Maxima de Conclusao
+        listaJobs = listaJobs.sort((a, b) => a.dataMaximaConclusao - b.dataMaximaConclusao);
+              
         for (job of listaJobs) {
             const resultCons = funcConsisteJob(job, inicioJanela, fimJanela);
 
@@ -38,6 +41,7 @@
                  tempoConjunto = tempoConjunto + job.tempoEstimado;
 
                  if (tempoConjunto > 8) {
+                 	  tempoConjunto = 0;
                     controleExecucao.push(conjunto);
                     conjunto = [];
 
@@ -52,6 +56,8 @@
 
         return {controleExecucao, controleInconsistente};
       }
+      module.exports = funcGeraConjuntos;
+
 
       function funcConsisteJob(job, inicioJanela, fimJanela){
          /* - funcConsisteJob -
