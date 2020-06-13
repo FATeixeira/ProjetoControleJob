@@ -1,5 +1,42 @@
-      function InterfaceCarregaDados(){
-         /* - InterfaceGetData -
+      window.globalListaJobs = [];
+
+      function funcControleJobs(){
+          /* - funcControleJobs -
+
+             Regra Funcional...: Metodo principal do processo de controle de jobs.
+
+             Parametros Entrada: N/a
+
+             Parametros Saida..: N/a
+
+             Autor.............: Flavio Teixeira
+             Data..............: 10/06/2020
+
+             - Log alterações -
+        */
+         const interface  = funcInterfaceGetInput();
+
+         if  (interface.flagErro === 'N') {
+              var inicioJanela = interface.tsDataInicio;
+              var fimJanela    = interface.tsDataFim;
+              var listaJobs    = [];
+              listaJobs        = window.globalListaJobs;
+
+              //Ordenacao ascendente por data Maxima de Conclusao
+              listaJobs = listaJobs.sort((a, b) => a.dataMaximaConclusao - b.dataMaximaConclusao);
+
+              var conjuntosExecucao = [];
+              var conjuntoInconsistente = [];
+              var ixConjunto = 0;
+
+              const controle = funcGeraConjuntos(listaJobs, inicioJanela, fimJanela);
+
+              funcExibirConjunto(controle.controleExecucao, controle.controleInconsistente);
+          }
+      }
+      
+      function funcInterfaceGetInput(){
+         /* - funcInterfaceGetInput -
 
              Regra Funcional...: Realiza validacoes dos dados inputados na tela, formata e retorna data inicio
                                  e fim da Janela e a lista de jobs informados pelo usuario.
@@ -53,7 +90,7 @@
          return {tsDataInicio, tsDataFim, flagErro};
     }
 
-    function InterfaceCarregaDadosJob(){
+    function InterfaceGetJob(){
          /* - InterfaceGetData -
 
              Regra Funcional...: Realiza validacoes dos dados inputados na tela, formata e retorna data inicio
@@ -113,7 +150,7 @@
 
              - Log alterações -
         */
-         const interface  = InterfaceCarregaDadosJob();
+         const interface  = InterfaceGetJob();
 
          if  (interface.flagErro === 'N') {
              var job   = {};

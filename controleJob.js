@@ -1,42 +1,5 @@
-      window.globalListaJobs = [];
-
-      function funcGeraControleJobs(){
-          /* - funcGeraControleJobs -
-
-             Regra Funcional...: Metodo principal do processo de controle de jobs.
-
-             Parametros Entrada: N/a
-
-             Parametros Saida..: N/a
-
-             Autor.............: Flavio Teixeira
-             Data..............: 10/06/2020
-
-             - Log alterações -
-        */
-         const interface  = InterfaceCarregaDados();
-
-         if  (interface.flagErro === 'N') {
-              var inicioJanela = interface.tsDataInicio;
-              var fimJanela    = interface.tsDataFim;
-              var listaJobs    = [];
-              listaJobs        = window.globalListaJobs;
-
-              //Ordenacao ascendente por data Maxima de Conclusao
-              listaJobs = listaJobs.sort((a, b) => a.dataMaximaConclusao - b.dataMaximaConclusao);
-
-              var conjuntosExecucao = [];
-              var conjuntoInconsistente = [];
-              var ixConjunto = 0;
-
-              const controle = funcControleJobs(listaJobs, inicioJanela, fimJanela);
-
-              funcExibirConjunto(controle.controleExecucao, controle.controleInconsistente);
-          }
-      }
-
-      function funcControleJobs(listaJobs, inicioJanela, fimJanela){
-         /* - funcControleJobs -
+      function funcGeraConjuntos(listaJobs, inicioJanela, fimJanela){
+         /* - funcGeraConjuntos -
 
              Regra Funcional...: A partir de lista de jobs e periodo de janela, gera conjuntos de jobs a serem processados
                                  agrupado por tempo total de 8 horas.
